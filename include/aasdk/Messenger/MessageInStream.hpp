@@ -52,6 +52,7 @@ private:
     FrameType recentFrameType_;
     ReceivePromise::Pointer promise_;
     Message::Pointer message_;
+    Message::Pointer messageBig_;
     std::map<messenger::ChannelId, Message::Pointer> messageBuffer_;
 };
 

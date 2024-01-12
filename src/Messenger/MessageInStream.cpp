@@ -63,29 +63,27 @@ void MessageInStream::receiveFrameHeaderHandler(const common::DataConstBuffer& b
 {
     FrameHeader frameHeader(buffer);
 
-    if(message_ != nullptr && message_->getChannelId() != frameHeader.getChannelId())
+    if(message_ == nullptr)
     {
-        messageBuffer_[message_->getChannelId()] = message_;
-        message_ = nullptr;
-    }
-
-    auto bufferedMessage = messageBuffer_.find(frameHeader.getChannelId());
-
-    if(bufferedMessage != messageBuffer_.end())
-    {
-        if(frameHeader.getType() != FrameType::FIRST)
-        {
-            message_ = bufferedMessage->second;
+        //message_ = std::make_shared<Message>(frameHeader.getChannelId(), frameHeader.getEncryptionType(), frameHeader.getMessageType());
+        if (messageBig_ != nullptr && messageBig_->getChannelId() == frameHeader.getChannelId()) {
+            message_ = std::move(messageBig_);
+            messageBig_ = nullptr;
+            //AASDK_LOG(debug) << "[chos] " << (int) message_->getChannelId();
         }
-        else
-        {
+        else {
             message_ = std::make_shared<Message>(frameHeader.getChannelId(), frameHeader.getEncryptionType(), frameHeader.getMessageType());
         }
-        messageBuffer_.erase(bufferedMessage);
     }
-    else if(message_ == nullptr)
+    else if(message_->getChannelId() != frameHeader.getChannelId())
     {
+        //message_.reset();
+        //promise_->reject(error::Error(error::ErrorCode::MESSENGER_INTERTWINED_CHANNELS));
+        //promise_.reset();
+        //return;
+        messageBig_ = std::move(message_);
         message_ = std::make_shared<Message>(frameHeader.getChannelId(), frameHeader.getEncryptionType(), frameHeader.getMessageType());
+        //AASDK_LOG(debug) << "[chos] " << (int) messageBig_->getChannelId() << " " << (int) message_->getChannelId() << " recentFrameType_ " << (int) recentFrameType_;
     }
 
     recentFrameType_ = frameHeader.getType();

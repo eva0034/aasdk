@@ -20,7 +20,9 @@
 
 #include <functional>
 #include <boost/asio.hpp>
-#include <boost/core/noncopyable.hpp>
+#if BOOST_VERSION >= 106600
+#include <boost/noncopyable.hpp>
+#endif
 #include <aasdk/Error/Error.hpp>
 #include <aasdk/IO/IOContextWrapper.hpp>
 

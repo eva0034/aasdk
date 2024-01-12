@@ -20,10 +20,10 @@
 
 #include <memory>
 #include <boost/asio.hpp>
-#include <libusb.h>
+//#include <libusb.h>
 #include <aasdk/IO/Promise.hpp>
 #include <aasdk/USB/IUSBEndpoint.hpp>
-
+#include <aasdk/USB/IUSBWrapper.hpp>
 
 namespace aasdk
 {

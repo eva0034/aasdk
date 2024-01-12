@@ -20,7 +20,7 @@
 
 #include <utility>
 #include <boost/asio.hpp>
-#include <libusb.h>
+//#include <libusb.h>
 #include <aasdk/USB/IUSBWrapper.hpp>
 #include <aasdk/USB/IAOAPDevice.hpp>
 
